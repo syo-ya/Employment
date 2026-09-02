@@ -12,6 +12,7 @@
 #define MOVE_SPEED		0.3
 #define JUMP_POW		0.25f
 #define GRAVITY			0.01f
+#define ANIMATION_SPEED 0.5f
 
 int StageRoll = 1;
 
@@ -21,6 +22,11 @@ Player::Player()
 	// コンストラクタではメンバ変数を0初期化するくらい
 	// ややこしい処理はしないこと
 	m_Handle = 0;
+	m_AnimationAttachIndex = 0;
+	m_AnimationTotalTime = 0.0f;
+	m_AnimationNowTime = 0.0f;
+	m_IsLoopAnimation = false;
+	m_NowAnimation = PLAYER_ANIMATION_JUMP;
 	m_Pos = VGet(0.0f, 0.0f, 0.0f);
 	m_Rot = VGet(0.0f, 0.0f, 0.0f);
 	m_Scale = VGet(0.0f, 0.0f, 0.0f);
@@ -59,14 +65,8 @@ void Player::Start()
 	// AABBの当たり判定を設定
 	m_AABB = CollisionManager::GetInstance()->CreateAABB();
 	m_AABB->SetTargetPos(&m_Pos);
-	m_AABB->SetLocalPos(VGet(0.0f, 0.5f, 0.0f));
-	m_AABB->SetSize(VGet(1.0f, 1.0f, 1.0f));
-
-	// 球の当たり判定を設定
-	m_SphereCollision = CollisionManager::GetInstance()->CreateSphere();
-	m_SphereCollision->SetTargetPos(&m_Pos);
-	m_SphereCollision->SetLocalPos(VGet(0.0f, 0.5f, 0.0f));
-	m_SphereCollision->SetRadius(0.5f);
+	m_AABB->SetLocalPos(VGet(0.0f, 0.0f, 0.0f));
+	m_AABB->SetSize(VGet(2.3f, 2.3f, 2.3f));
 
 	// ゴールフラグを折る
 	m_IsGoal = false;
@@ -188,6 +188,8 @@ void Player::Step()
 		}
 	}
 
+	PlayAnimation(PLAYER_ANIMATION_RUN, true);
+
 	// 移動前の座標を記録
 	m_PrevPos = m_Pos;
 
@@ -195,16 +197,35 @@ void Player::Step()
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 }
 
-// 更新
 void Player::Update()
 {
+	m_Rot.z = GetRoll();
 
-	// 3Dモデルの座標を設定する
-	MV1SetPosition(m_Handle, m_Pos);
-	// 3Dモデルの回転値を設定する
+	// プレイヤーの高さ
+	float height = 3.0f; // 実際のプレイヤーの高さに変更
+
+	// 足元からモデル中心までのベクトル
+	VECTOR offset = VGet(
+		0.0f,
+		height / 2.0f,
+		0.0f
+	);
+
+	// Z軸回転
+	VECTOR rotatedOffset = VGet(
+		-sinf(m_Rot.z) * offset.y,
+		cosf(m_Rot.z) * offset.y,
+		0.0f
+	);
+
+	// 回転後も足元(m_Pos)が同じ位置になるようにする
+	VECTOR modelPos = VSub(m_Pos, rotatedOffset);
+
+	MV1SetPosition(m_Handle, modelPos);
 	MV1SetRotationXYZ(m_Handle, m_Rot);
-	// 3Dモデルのスケールを設定する
 	MV1SetScale(m_Handle, m_Scale);
+
+	UpdateAnimation();
 }
 
 // 描画
@@ -215,11 +236,19 @@ void Player::Draw()
 
 	// 座標を描画する
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "座標[%f, %f, %f]", m_Pos.x, m_Pos.y, m_Pos.z);
-
+	
 	// 回転値を描画する
 	DrawFormatString(0, 20, GetColor(255, 255, 255), "stageFlg::%d", StageRoll);
 
-	
+	DrawFormatString(
+		0,
+		40,
+		GetColor(255, 255, 255),
+		"AnimTime: %f / %f",
+		m_AnimationNowTime,
+		m_AnimationTotalTime
+	);
+
 }
 
 // 終了
@@ -283,4 +312,53 @@ void Player::HitGoal()
 int GetStageRollFlg()
 {
 	return StageRoll;
+}
+
+void Player::PlayAnimation(PlayerAnimationType anim, bool isLoop)
+{
+	// 再生中のアニメーションで呼ばれた場合は何もしない
+	if (anim == m_NowAnimation) return;
+
+	// 再生していたアニメーションはデタッチする
+	MV1DetachAnim(m_Handle, m_AnimationAttachIndex);
+
+	// アニメーションをアタッチする
+	m_AnimationAttachIndex = MV1AttachAnim(m_Handle, anim);
+
+	// アニメーションのトータル時間を取得
+	m_AnimationTotalTime = MV1GetAttachAnimTotalTime(m_Handle, m_AnimationAttachIndex);
+
+	// 現在の再生時間を0にする
+	m_AnimationNowTime = 0.0f;
+
+	// ループ設定
+	m_IsLoopAnimation = isLoop;
+
+	// 再生中のアニメーション設定
+	m_NowAnimation = anim;
+}
+
+// アニメーションを更新する
+void Player::UpdateAnimation()
+{
+	// アニメーションの再生時間を設定
+	MV1SetAttachAnimTime(m_Handle, m_AnimationAttachIndex, m_AnimationNowTime);
+
+	// 再生時間を進める
+	m_AnimationNowTime += ANIMATION_SPEED;
+
+	// 末尾まで再生したか
+	if (m_AnimationNowTime >= m_AnimationTotalTime)
+	{
+		// ループ設定なら冒頭へ戻す
+		if (m_IsLoopAnimation)
+		{
+			m_AnimationNowTime = 0.0f;
+		}
+		// ループでなければ末尾で止める
+		else
+		{
+			m_AnimationNowTime = m_AnimationTotalTime;
+		}
+	}
 }

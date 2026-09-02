@@ -5,6 +5,7 @@
 class Player;
 
 int GetStageCameraFlg();
+float GetRoll();
 
 // ƒJƒƒ‰ƒNƒ‰ƒX
 class Camera : public CameraBase

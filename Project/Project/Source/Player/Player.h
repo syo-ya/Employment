@@ -9,6 +9,12 @@ class StageObject;
 
 int GetStageRollFlg();
 
+enum PlayerAnimationType
+{
+	PLAYER_ANIMATION_JUMP = 1,
+	PLAYER_ANIMATION_RUN = 2,
+};
+
 // プレイヤークラス
 class Player 
 {
@@ -35,9 +41,16 @@ public:
 public:
 	void CheckHitStageObjects(const std::vector<StageObject*>objects);
 	void HitGoal();
-
+	void PlayAnimation(PlayerAnimationType anim, bool isLoop);
+	void UpdateAnimation();
+	
 private:
 	int m_Handle;	// 画像ハンドル
+	int m_AnimationAttachIndex;	// アニメーションのアタッチインデックス
+	float m_AnimationTotalTime;	// 再生中のアニメーションの総時間
+	float m_AnimationNowTime;	// 再生中のアニメーションの再生時間
+	bool m_IsLoopAnimation;		// アニメーションをループさせるか
+	PlayerAnimationType m_NowAnimation;	// 再生中のアニメーション
 	VECTOR m_Pos;	// 座標
 	VECTOR m_Rot;	// 回転
 	VECTOR m_Scale;	// スケール

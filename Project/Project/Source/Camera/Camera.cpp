@@ -163,3 +163,8 @@ int GetStageCameraFlg()
 {
 	return stageFlg;
 }
+
+float GetRoll()
+{
+	return m_Roll;
+}
