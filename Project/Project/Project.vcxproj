@@ -156,10 +156,11 @@
     <ClCompile Include="Source\Scene\PlayScene.cpp" />
     <ClCompile Include="Source\Scene\SceneBase.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
-    <ClCompile Include="Source\Scene\TestScene.cpp" />
+    <ClCompile Include="Source\Scene\GameOver.cpp" />
     <ClCompile Include="Source\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\StageObject\Block\Block.cpp" />
     <ClCompile Include="Source\StageObject\Floor\Floor.cpp" />
+    <ClCompile Include="Source\StageObject\Item\Item.cpp" />
     <ClCompile Include="Source\StageObject\StageObject.cpp" />
     <ClCompile Include="Source\StageObject\StageObjectManager.cpp" />
     <ClCompile Include="Source\Stage\StageManager.cpp" />
@@ -183,12 +184,13 @@
     <ClInclude Include="Source\Scene\SceneBase.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneParameter.h" />
-    <ClInclude Include="Source\Scene\TestScene.h" />
+    <ClInclude Include="Source\Scene\GameOver.h" />
     <ClInclude Include="Source\Scene\TitleScene.h" />
     <ClInclude Include="Source\StageObject\Block\Block.h" />
     <ClInclude Include="Source\StageObject\Block\BlockParameter.h" />
     <ClInclude Include="Source\StageObject\Floor\Floor.h" />
     <ClInclude Include="Source\StageObject\Floor\FloorParameter.h" />
+    <ClInclude Include="Source\StageObject\Item\Item.h" />
     <ClInclude Include="Source\StageObject\StageObject.h" />
     <ClInclude Include="Source\StageObject\StageObjectManager.h" />
     <ClInclude Include="Source\Stage\StageManager.h" />

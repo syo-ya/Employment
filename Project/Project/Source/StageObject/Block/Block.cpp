@@ -6,8 +6,8 @@ void Block::Start()
 {
 	m_AABB = CollisionManager::GetInstance()->CreateAABB();
 	m_AABB->SetTargetPos(&m_Pos);
-	m_AABB->SetSize(VGet(1.0f, 1.0f, 1.0f));
-	m_AABB->SetLocalPos(VGet(0.0f, 0.5f, 0.0f));
+	m_AABB->SetSize(VGet(3.0f, 3.0f, 3.0f));
+	m_AABB->SetLocalPos(VGet(0.0f, 0.0f, 0.0f));
 }
 
 StageObject* Block::Clone()

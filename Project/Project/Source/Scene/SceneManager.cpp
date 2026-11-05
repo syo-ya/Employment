@@ -2,7 +2,7 @@
 #include "TitleScene.h"
 #include "PlayScene.h"
 #include "ClearScene.h"
-#include "TestScene.h"
+#include "GameOver.h"
 
 SceneManager* SceneManager::m_Instance = nullptr;
 
@@ -114,6 +114,6 @@ void SceneManager::CreateScene(SceneType type)
 		case TITLE: m_NowScene = new TitleScene; break;
 		case PLAY: m_NowScene = new PlayScene; break;
 		case CLEAR: m_NowScene = new ClearScene; break;
-		case TEST: m_NowScene = new TitleScene; break;
+		case GAMEOVER: m_NowScene = new GameOver; break;
 	}
 }

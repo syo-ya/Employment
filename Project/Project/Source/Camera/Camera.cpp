@@ -5,7 +5,7 @@
 #include "../MyMath/MyMath.h"
 
 #define CAMERA_NEAR_CLIP 0.01f
-#define CAMERA_FAR_CLIP 1000.0f
+#define CAMERA_FAR_CLIP 2000.0f
 
 #define PLAYER_DISTANCE -15.0f
 #define ROTATION_SPEED 0.025f
@@ -13,9 +13,12 @@
 #define X_ROTATION_MAX (DX_PI_F * 0.49f)
 
 int stageFlg = 1;
+bool CameraRollFlg = true;
 
 float m_Roll = 0.0f;
 float saveRoll = 0.0f;
+
+float PosZ;
 
 // 基底クラスのコンストラクタ呼ぶ際は追加で書く
 Camera::Camera() : CameraBase()
@@ -46,42 +49,17 @@ void Camera::Start()
 
 	// 追従するプレイヤー
 	m_TargetPlayer = PlayerManager::GetInstance()->GetPlayer();
+
+	m_Pos.z = -45.0f + PLAYER_DISTANCE;
+
+	stageFlg = 1;
+
+	m_Roll = 0.0f;
 }
 
 void Camera::Step()
 {
-	// キー入力処理
-	if (Input::IsInputKey(KEY_A))
-	{
-		// 左回転
-		m_Rot.z += ROTATION_SPEED;
-	}
-	if (Input::IsInputKey(KEY_D))
-	{
-		// 右回転
-		m_Rot.z -= ROTATION_SPEED;
-	}
-	if (Input::IsInputKey(KEY_W))
-	{
-		// 手前回転
-		m_Rot.x += ROTATION_SPEED;
-	}
-	if (Input::IsInputKey(KEY_S))
-	{
-		// 奥回転
-		m_Rot.x -= ROTATION_SPEED;
-	}
 
-	// X軸回転は頭上や足元を超えようとするとカメラ向きがひっくり返るため
-	// 超えないように止める
-	if (m_Rot.x >= X_ROTATION_MAX)
-	{
-		m_Rot.x = X_ROTATION_MAX;
-	}
-	else if (m_Rot.x <= -X_ROTATION_MAX)
-	{
-		m_Rot.x = -X_ROTATION_MAX;
-	}
 }
 
 void Camera::Update()
@@ -91,19 +69,21 @@ void Camera::Update()
 	// カメラの位置
 	m_Pos.x = 0.0f;                  // X固定
 	m_Pos.y = 10.0f;                  // Y固定
-	m_Pos.z = playerPos.z + PLAYER_DISTANCE;
+	m_Pos.z += 0.2;
 
 	m_Target.x = 5.0f * sinf(m_Roll);
 	m_Target.y = 10.0f - 5.0f * cosf(m_Roll);
-	m_Target.z = playerPos.z;
+	m_Target.z = m_Pos.z - PLAYER_DISTANCE;
 
-	if (Input::IsTriggerKey(KEY_D) && stageFlg == 1)
+	if (Input::IsTriggerKey(KEY_D) && stageFlg == 1 && CameraRollFlg)
 	{
 		stageFlg = 2;
+		CameraRollFlg = false;
 	}
-	else if (Input::IsTriggerKey(KEY_A) && stageFlg == 1)
+	else if (Input::IsTriggerKey(KEY_A) && stageFlg == 1 && CameraRollFlg)
 	{
 		stageFlg = 4;
+		CameraRollFlg = false;
 	}
 
 	if (stageFlg == 2)
@@ -146,6 +126,13 @@ void Camera::Update()
 		0.0f
 	);
 
+	PosZ = m_Pos.z;
+
+	if (GetStageRollFlg())
+	{
+		CameraRollFlg = true;
+	}
+
 	SetCameraPositionAndTargetAndUpVec(m_Pos, m_Target, m_UpVec);
 }
 
@@ -167,4 +154,9 @@ int GetStageCameraFlg()
 float GetRoll()
 {
 	return m_Roll;
+}
+
+float GetCameraPosZ()
+{
+	return PosZ;
 }

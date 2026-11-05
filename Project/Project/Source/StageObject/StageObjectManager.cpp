@@ -90,7 +90,7 @@ Floor* StageObjectManager::CreateFloor(int id, VECTOR pos, VECTOR rot, VECTOR sc
 	Floor* floor = CreateFloor(id);
 	floor->SetTransform(pos, rot, scale);
 
-	return floor;
+	return floor;  
 }
 
 Block* StageObjectManager::CreateBlock(int id)

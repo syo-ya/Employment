@@ -15,8 +15,8 @@ enum SceneType
 {
 	TITLE,
 	PLAY,
+	GAMEOVER,
 	CLEAR,
-	TEST,
 	SCENE_TYPE_NONE = -1
 };
 

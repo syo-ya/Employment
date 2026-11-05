@@ -7,8 +7,6 @@ class CollisionAABB;
 class CollisionSphere;
 class StageObject;
 
-int GetStageRollFlg();
-
 enum PlayerAnimationType
 {
 	PLAYER_ANIMATION_JUMP = 1,
@@ -60,4 +58,6 @@ private:
 	CollisionSphere* m_SphereCollision;
 	bool m_IsGoal;
 };
+
+bool GetStageRollFlg();
 

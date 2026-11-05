@@ -6,15 +6,24 @@
 #include "../Collision/CollisionSphere.h"
 #include "../StageObject/StageObject.h"
 #include "../Camera/Camera.h"
+#include "../Scene/SceneManager.h"
+#include "../FPS/FPS.h"
 
 #define ROTATION_SPEED	0.1f
-#define MOVE_SPEED_AUTO	0.1f
-#define MOVE_SPEED		0.3
-#define JUMP_POW		0.25f
-#define GRAVITY			0.01f
+#define JUMP_POW		0.4f
+#define GRAVITY			0.02f
 #define ANIMATION_SPEED 0.5f
+#define STAGE_ROOL_COOLTIME 1.0f
+
+float MoveSpeed = 0.2f;
 
 int StageRoll = 1;
+
+bool StageRollFlg = true;
+
+float StageRollTimer;
+
+bool jumpFlg = false;
 
 // コンストラクタ
 Player::Player()
@@ -35,6 +44,7 @@ Player::Player()
 	m_AABB = nullptr;
 	m_SphereCollision = nullptr;
 	m_IsGoal = false;
+	StageRoll = 1;
 }
 
 // デストラクタ
@@ -70,6 +80,8 @@ void Player::Start()
 
 	// ゴールフラグを折る
 	m_IsGoal = false;
+
+	StageRollTimer = 0;
 }
 
 // ステップ
@@ -85,16 +97,17 @@ void Player::Step()
 
 			if (Input::IsInputKey(KEY_LEFT))
 			{
-				m_Move.x = -MOVE_SPEED;
+				m_Move.x = -MoveSpeed;
 			}
 			if (Input::IsInputKey(KEY_RIGHT))
 			{
-				m_Move.x = MOVE_SPEED;
+				m_Move.x = MoveSpeed;
 			}
 
-			if (Input::IsTriggerKey(KEY_SPACE))
+			if (Input::IsTriggerKey(KEY_SPACE) && !jumpFlg)
 			{
 				m_Move.y = JUMP_POW;
+				jumpFlg = true;
 			}
 		}
 		if (StageRoll == 2)
@@ -105,16 +118,17 @@ void Player::Step()
 
 			if (Input::IsInputKey(KEY_LEFT))
 			{
-				m_Move.y = -MOVE_SPEED;
+				m_Move.y = -MoveSpeed;
 			}
 			if (Input::IsInputKey(KEY_RIGHT))
 			{
-				m_Move.y = MOVE_SPEED;
+				m_Move.y = MoveSpeed;
 			}
 
-			if (Input::IsTriggerKey(KEY_SPACE))
+			if (Input::IsTriggerKey(KEY_SPACE) && !jumpFlg)
 			{
 				m_Move.x = -JUMP_POW;
+				jumpFlg = true;
 			}
 		}
 		if (StageRoll == 3)
@@ -125,16 +139,17 @@ void Player::Step()
 
 			if (Input::IsInputKey(KEY_LEFT))
 			{
-				m_Move.x = MOVE_SPEED;
+				m_Move.x = MoveSpeed;
 			}
 			if (Input::IsInputKey(KEY_RIGHT))
 			{
-				m_Move.x = -MOVE_SPEED;
+				m_Move.x = -MoveSpeed;
 			}
 
-			if (Input::IsTriggerKey(KEY_SPACE))
+			if (Input::IsTriggerKey(KEY_SPACE) && !jumpFlg)
 			{
 				m_Move.y = -JUMP_POW;
+				jumpFlg = true;
 			}
 		}
 		if (StageRoll == 4)
@@ -145,16 +160,17 @@ void Player::Step()
 
 			if (Input::IsInputKey(KEY_LEFT))
 			{
-				m_Move.y = MOVE_SPEED;
+				m_Move.y = MoveSpeed;
 			}
 			if (Input::IsInputKey(KEY_RIGHT))
 			{
-				m_Move.y = -MOVE_SPEED;
+				m_Move.y = -MoveSpeed;
 			}
 
-			if (Input::IsTriggerKey(KEY_SPACE))
+			if (Input::IsTriggerKey(KEY_SPACE) && !jumpFlg)
 			{
 				m_Move.x = JUMP_POW;
+				jumpFlg = true;
 			}
 		}
 	}
@@ -163,10 +179,14 @@ void Player::Step()
 		m_Move = VGet(0.0f, 0.0f, 0.0f);
 	}
 
-	m_Move.z = MOVE_SPEED_AUTO;
+	m_Move.z = MoveSpeed;
 
-	if (Input::IsTriggerKey(KEY_D) && GetStageCameraFlg() == 1)
+	if (Input::IsTriggerKey(KEY_D) && GetStageCameraFlg() == 1 && StageRollFlg)
 	{
+		StageRollTimer = STAGE_ROOL_COOLTIME;
+
+		StageRollFlg = false;
+
 		if (StageRoll == 4)
 		{
 			StageRoll = 1;
@@ -176,8 +196,12 @@ void Player::Step()
 			StageRoll++;
 		}
 	}
-	if (Input::IsTriggerKey(KEY_A) && GetStageCameraFlg() == 1)
+	if (Input::IsTriggerKey(KEY_A) && GetStageCameraFlg() == 1 && StageRollFlg)
 	{
+		StageRollTimer = STAGE_ROOL_COOLTIME;
+
+		StageRollFlg = false;
+
 		if (StageRoll == 1)
 		{
 			StageRoll = 4;
@@ -200,6 +224,17 @@ void Player::Step()
 void Player::Update()
 {
 	m_Rot.z = GetRoll();
+
+	if (StageRollTimer > 0)
+	{
+		StageRollTimer -= (1 / FPSSystem::GetFPS());
+	}
+
+	if (StageRollTimer <= 0 && !StageRollFlg)
+	{
+		StageRollTimer = 0.0f;
+		StageRollFlg = true;
+	}
 
 	// プレイヤーの高さ
 	float height = 3.0f; // 実際のプレイヤーの高さに変更
@@ -226,6 +261,22 @@ void Player::Update()
 	MV1SetScale(m_Handle, m_Scale);
 
 	UpdateAnimation();
+	
+	if (m_Pos.z - GetCameraPosZ() > 5.0f && m_Pos.z - GetCameraPosZ() < 15)
+	{
+		MoveSpeed = 0.25f;
+	}
+
+	if (m_Pos.z - GetCameraPosZ() >= 15)
+	{
+		MoveSpeed = 0.2f;
+	}
+
+	if (m_Pos.z - GetCameraPosZ() <= 5.0f)
+	{
+		SceneManager::GetInstance()->ChangeScene(GAMEOVER);
+	}
+
 }
 
 // 描画
@@ -238,7 +289,7 @@ void Player::Draw()
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "座標[%f, %f, %f]", m_Pos.x, m_Pos.y, m_Pos.z);
 	
 	// 回転値を描画する
-	DrawFormatString(0, 20, GetColor(255, 255, 255), "stageFlg::%d", StageRoll);
+	DrawFormatString(0, 20, GetColor(255, 255, 255), "%f", m_Pos.z - GetCameraPosZ());
 
 	DrawFormatString(
 		0,
@@ -273,6 +324,11 @@ void Player::CheckHitStageObjects(const std::vector<StageObject*> objects)
 		if (m_AABB->CheckAABB(objAABB))
 		{
 			m_Pos.x = m_PrevPos.x;
+			m_Move.x = 0.0f;// 着地
+			if (StageRoll == 2 || StageRoll == 4)
+			{
+				jumpFlg = false;
+			}
 		}
 	}
 
@@ -287,6 +343,10 @@ void Player::CheckHitStageObjects(const std::vector<StageObject*> objects)
 		{
 			m_Pos.y = m_PrevPos.y;
 			m_Move.y = 0.0f;// 着地
+			if (StageRoll == 1 || StageRoll == 3)
+			{
+				jumpFlg = false;
+			}
 		}
 	}
 
@@ -309,15 +369,15 @@ void Player::HitGoal()
 	m_IsGoal = true;
 }
 
-int GetStageRollFlg()
+bool GetStageRollFlg()
 {
-	return StageRoll;
+	return StageRollFlg;
 }
 
 void Player::PlayAnimation(PlayerAnimationType anim, bool isLoop)
 {
 	// 再生中のアニメーションで呼ばれた場合は何もしない
-	if (anim == m_NowAnimation) return;
+	if (anim == m_NowAnimation) return; 
 
 	// 再生していたアニメーションはデタッチする
 	MV1DetachAnim(m_Handle, m_AnimationAttachIndex);

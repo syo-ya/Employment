@@ -1,11 +1,11 @@
 #pragma once
 #include "SceneBase.h"
 
-class TestScene : public SceneBase
+class GameOver : public SceneBase
 {
 public:
-	TestScene();
-	~TestScene();
+	GameOver();
+	~GameOver();
 
 public:
 	void Init() override;

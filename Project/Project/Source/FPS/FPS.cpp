@@ -60,3 +60,8 @@ void FPSSystem::WaitFPS()
         Sleep(waitTime);
     }
 }
+
+float FPSSystem::GetFPS()
+{
+    return m_Fps;
+}

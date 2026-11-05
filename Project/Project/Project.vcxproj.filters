@@ -22,9 +22,6 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{2941d3ea-568d-4d8d-8707-720da747d00b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Scene">
-      <UniqueIdentifier>{490f0a56-afdb-4188-b47b-311bcc0dc03a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Stage">
       <UniqueIdentifier>{038764dd-78a9-4938-bc8c-a623cec8db06}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,12 @@
     </Filter>
     <Filter Include="Source\Library\Json">
       <UniqueIdentifier>{a6e168dd-508f-40ff-bac3-6b44bbd0bc3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Stage\Scene">
+      <UniqueIdentifier>{490f0a56-afdb-4188-b47b-311bcc0dc03a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\StageObject\Item">
+      <UniqueIdentifier>{b3ad265f-ba74-402c-a88d-a1eecaff31ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,22 +88,22 @@
       <Filter>Source\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneBase.cpp">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneManager.cpp">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\TitleScene.cpp">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\PlayScene.cpp">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene\TestScene.cpp">
-      <Filter>Source\Scene</Filter>
+    <ClCompile Include="Source\Scene\GameOver.cpp">
+      <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\ClearScene.cpp">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\StageObject\StageObject.cpp">
       <Filter>Source\StageObject</Filter>
@@ -111,11 +114,14 @@
     <ClCompile Include="Source\StageObject\Floor\Floor.cpp">
       <Filter>Source\StageObject\Floor</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Stage\StageManager.cpp">
-      <Filter>Source\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Source\StageObject\StageObjectManager.cpp">
       <Filter>Source\StageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Stage\StageManager.cpp">
+      <Filter>Source\Stage\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StageObject\Item\Item.cpp">
+      <Filter>Source\StageObject\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,25 +162,22 @@
       <Filter>Source\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\SceneBase.h">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\SceneManager.h">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\TitleScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneParameter.h">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\PlayScene.h">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\TestScene.h">
-      <Filter>Source\Scene</Filter>
+    <ClInclude Include="Source\Scene\GameOver.h">
+      <Filter>Source\Stage\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\ClearScene.h">
-      <Filter>Source\Scene</Filter>
+      <Filter>Source\Stage\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\StageObject\StageObject.h">
       <Filter>Source\StageObject</Filter>
@@ -191,9 +194,6 @@
     <ClInclude Include="Source\Stage\StageManager.h">
       <Filter>Source\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Stage\StageParameter.h">
-      <Filter>Source\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\StageObject\StageObjectManager.h">
       <Filter>Source\StageObject</Filter>
     </ClInclude>
@@ -202,6 +202,15 @@
     </ClInclude>
     <ClInclude Include="Source\StageObject\Block\BlockParameter.h">
       <Filter>Source\StageObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneParameter.h">
+      <Filter>Source\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stage\StageParameter.h">
+      <Filter>Source\StageObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageObject\Item\Item.h">
+      <Filter>Source\StageObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

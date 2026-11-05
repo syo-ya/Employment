@@ -21,6 +21,7 @@ void StageObject::Start()
 void StageObject::Load(const char* fileName)
 {
 	m_Handle = MV1LoadModel(fileName);
+	MV1SetUseZBuffer(m_Handle, TRUE);
 }
 
 void StageObject::Update()

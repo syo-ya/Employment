@@ -3,7 +3,7 @@
 class CollisionAABB;
 class CollisionSphere;
 
-#define COLLISION_MAX 32
+#define COLLISION_MAX 2048
 
 class CollisionManager
 {

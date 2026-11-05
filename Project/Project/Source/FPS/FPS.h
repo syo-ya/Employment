@@ -7,6 +7,7 @@ public:
 	static void Init();
 	static void Update();
 	static void Draw();
+	static float GetFPS();
 
 	// 1ƒtƒŒ[ƒ€‚ª‘¬‚·‚¬‚½‚Æ‚«‚Ì‘Ò‹@ŠÖ”
 	static void WaitFPS();

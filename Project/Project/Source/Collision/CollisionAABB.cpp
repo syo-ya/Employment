@@ -18,6 +18,7 @@ CollisionAABB::~CollisionAABB()
 
 void CollisionAABB::Draw()
 {
+
 #ifdef _DEBUG
 	// デバッグ用の当たり判定の可視化
 	VECTOR posA, posB;

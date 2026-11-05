@@ -19,6 +19,12 @@ PlayScene::~PlayScene()
 
 void PlayScene::Init()
 {
+	// Ｚバッファを有効にする
+	SetUseZBuffer3D(TRUE);
+
+	// Ｚバッファへの書き込みを有効にする
+	SetWriteZBuffer3D(TRUE);
+
 	// コリジョンマネージャー生成
 	CollisionManager::CreateInstance();
 
@@ -71,11 +77,11 @@ void PlayScene::Start()
 	// ステージオブジェクト開始
 	StageObjectManager::GetInstance()->Start();
 
-	// プレイヤー開始
-	PlayerManager::GetInstance()->Start();
-
 	// カメラ開始
 	CameraManager::GetInstance()->Start();
+
+	// プレイヤー開始
+	PlayerManager::GetInstance()->Start();
 }
 
 void PlayScene::Step()
@@ -120,12 +126,12 @@ void PlayScene::Step()
 
 void PlayScene::Update()
 {
+	// カメラ更新
+	CameraManager::GetInstance()->Update();
 	// ステージオブジェクト更新
 	StageObjectManager::GetInstance()->Update();
 	// プレイヤー更新
 	PlayerManager::GetInstance()->Update();
-	// カメラ更新
-	CameraManager::GetInstance()->Update();
 }
 
 void PlayScene::Draw()
@@ -156,4 +162,10 @@ void PlayScene::Fin()
 
 	// コリジョンマネージャー削除
 	CollisionManager::DeleteInstance();
+
+	// Ｚバッファを無効にする
+	SetUseZBuffer3D(FALSE);
+
+	// Ｚバッファへの書き込みを無効にする
+	SetWriteZBuffer3D(FALSE);
 }
