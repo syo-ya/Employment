@@ -46,6 +46,12 @@
     <Filter Include="Source\StageObject\Item">
       <UniqueIdentifier>{b3ad265f-ba74-402c-a88d-a1eecaff31ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StageObject\Item\SpeedDown">
+      <UniqueIdentifier>{25f4f2fc-090b-41ca-a040-69d490a445ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\StageObject\Item\SpeedUp">
+      <UniqueIdentifier>{e7041a93-8351-48a1-91e8-375300583d42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -120,8 +126,11 @@
     <ClCompile Include="Source\Stage\StageManager.cpp">
       <Filter>Source\Stage\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StageObject\Item\Item.cpp">
-      <Filter>Source\StageObject\Item</Filter>
+    <ClCompile Include="Source\StageObject\Item\SpeedUp\SpeedUp.cpp">
+      <Filter>Source\StageObject\Item\SpeedUp</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StageObject\Item\SpeedDown\SpeedDown.cpp">
+      <Filter>Source\StageObject\Item\SpeedDown</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,8 +218,17 @@
     <ClInclude Include="Source\Stage\StageParameter.h">
       <Filter>Source\StageObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StageObject\Item\Item.h">
-      <Filter>Source\StageObject\Item</Filter>
+    <ClInclude Include="Source\StageObject\Item\SpeedUp\SpeedUp.h">
+      <Filter>Source\StageObject\Item\SpeedUp</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageObject\Item\SpeedUp\SpeedUpParameter.h">
+      <Filter>Source\StageObject\Item\SpeedUp</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageObject\Item\SpeedDown\SpeedDown.h">
+      <Filter>Source\StageObject\Item\SpeedDown</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageObject\Item\SpeedDown\SpeedDownParameter.h">
+      <Filter>Source\StageObject\Item\SpeedDown</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

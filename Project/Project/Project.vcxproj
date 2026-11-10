@@ -160,7 +160,8 @@
     <ClCompile Include="Source\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\StageObject\Block\Block.cpp" />
     <ClCompile Include="Source\StageObject\Floor\Floor.cpp" />
-    <ClCompile Include="Source\StageObject\Item\Item.cpp" />
+    <ClCompile Include="Source\StageObject\Item\SpeedDown\SpeedDown.cpp" />
+    <ClCompile Include="Source\StageObject\Item\SpeedUp\SpeedUp.cpp" />
     <ClCompile Include="Source\StageObject\StageObject.cpp" />
     <ClCompile Include="Source\StageObject\StageObjectManager.cpp" />
     <ClCompile Include="Source\Stage\StageManager.cpp" />
@@ -190,7 +191,10 @@
     <ClInclude Include="Source\StageObject\Block\BlockParameter.h" />
     <ClInclude Include="Source\StageObject\Floor\Floor.h" />
     <ClInclude Include="Source\StageObject\Floor\FloorParameter.h" />
-    <ClInclude Include="Source\StageObject\Item\Item.h" />
+    <ClInclude Include="Source\StageObject\Item\SpeedDown\SpeedDown.h" />
+    <ClInclude Include="Source\StageObject\Item\SpeedDown\SpeedDownParameter.h" />
+    <ClInclude Include="Source\StageObject\Item\SpeedUp\SpeedUp.h" />
+    <ClInclude Include="Source\StageObject\Item\SpeedUp\SpeedUpParameter.h" />
     <ClInclude Include="Source\StageObject\StageObject.h" />
     <ClInclude Include="Source\StageObject\StageObjectManager.h" />
     <ClInclude Include="Source\Stage\StageManager.h" />

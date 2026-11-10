@@ -19,4 +19,3 @@ StageObject* Block::Clone()
 
 	return clone;
 }
-
